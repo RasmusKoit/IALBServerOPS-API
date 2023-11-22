@@ -1,334 +1,531 @@
-openapi: 3.0.1
-info:
-  title: OpenAPI definition
-  version: v0
-servers:
-- url: http://localhost:8080
-  description: Generated server url
-paths:
-  /user/update:
-    post:
-      tags:
-      - user-controller-api
-      operationId: updateUser
-      parameters:
-      - name: user
-        in: query
-        required: true
-        schema:
-          $ref: '#/components/schemas/User'
-      responses:
-        "200":
-          description: The ID of the updated user
-          content:
-            application/json:
-              schema:
-                type: string
-                format: uuid
-        "404":
-          description: User not found
-          content:
-            application/json:
-              schema:
-                type: string
-                format: uuid
-              example: User not found
-  /user/add:
-    post:
-      tags:
-      - user-controller-api
-      operationId: addUser
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                username:
-                  type: string
-                email:
-                  type: string
-                password:
-                  type: string
-        required: true
-      responses:
-        "400":
-          description: Invalid request body
-          content:
-            application/json:
-              schema:
-                type: string
-                format: uuid
-              example: Invalid request body
-        "200":
-          description: The ID of the newly created user
-          content:
-            application/json:
-              schema:
-                type: string
-  /server/update:
-    post:
-      tags:
-      - server-controller-api
-      operationId: updateServer
-      parameters:
-      - name: server
-        in: query
-        required: true
-        schema:
-          $ref: '#/components/schemas/Server'
-      responses:
-        "404":
-          description: User not found
-          content:
-            application/json:
-              schema:
-                type: string
-                format: uuid
-              example: User not found
-        "200":
-          description: The ID of the updated server
-          content:
-            application/json:
-              schema:
-                type: string
-                format: uuid
-  /server/add:
-    post:
-      tags:
-      - server-controller-api
-      operationId: addServer
-      parameters:
-      - name: serverName
-        in: query
-        required: true
-        schema:
-          type: string
-      - name: ram
-        in: query
-        required: true
-        schema:
-          type: integer
-          format: int32
-      - name: diskSpace
-        in: query
-        required: true
-        schema:
-          type: integer
-          format: int32
-      - name: cpuCores
-        in: query
-        required: true
-        schema:
-          type: integer
-          format: int32
-      - name: ipPubAddress
-        in: query
-        required: true
-        schema:
-          type: string
-      - name: ipPrivAddress
-        in: query
-        required: true
-        schema:
-          type: string
-      - name: ownerId
-        in: query
-        required: true
-        schema:
-          type: string
-      responses:
-        "404":
-          description: User not found
-          content:
-            application/json:
-              schema:
-                type: string
-                format: uuid
-              example: User not found
-        "200":
-          description: The ID of the newly created server
-          content:
-            application/json:
-              schema:
-                type: string
-                format: uuid
-  /user/{userId}:
-    get:
-      tags:
-      - user-controller-api
-      operationId: getUser
-      parameters:
-      - name: userId
-        in: path
-        required: true
-        schema:
-          type: string
-      responses:
-        "404":
-          description: User not found
-          content:
-            application/json:
-              schema:
-                type: string
-                format: uuid
-              example: User not found
-        "200":
-          description: The user with the given ID
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/User'
-  /user/:
-    get:
-      tags:
-      - user-controller-api
-      operationId: getAllUsers
-      responses:
-        "200":
-          description: A map of all users or null if no users exist
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/User'
-  /server/{serverId}:
-    get:
-      tags:
-      - server-controller-api
-      operationId: getServer
-      parameters:
-      - name: serverId
-        in: path
-        required: true
-        schema:
-          type: string
-      responses:
-        "404":
-          description: Server not found
-          content:
-            application/json:
-              schema:
-                type: string
-                format: uuid
-              example: Server not found
-        "200":
-          description: The server with the given ID
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Server'
-  /server/:
-    get:
-      tags:
-      - server-controller-api
-      operationId: getAllServers
-      responses:
-        "200":
-          description: A map of all servers or null if no servers exist
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Server'
-  /user/delete/{userId}:
-    delete:
-      tags:
-      - user-controller-api
-      operationId: deleteUser
-      parameters:
-      - name: userId
-        in: path
-        required: true
-        schema:
-          type: string
-      responses:
-        "200":
-          description: The ID of the deleted user
-          content:
-            application/json:
-              schema:
-                type: string
-                format: uuid
-        "404":
-          description: User not found
-          content:
-            application/json:
-              schema:
-                type: string
-                format: uuid
-              example: User not found
-  /server/delete/{serverId}:
-    delete:
-      tags:
-      - server-controller-api
-      operationId: deleteServer
-      parameters:
-      - name: serverId
-        in: path
-        required: true
-        schema:
-          type: string
-      responses:
-        "404":
-          description: User not found
-          content:
-            application/json:
-              schema:
-                type: string
-                format: uuid
-              example: User not found
-        "200":
-          description: The ID of the deleted server
-          content:
-            application/json:
-              schema:
-                type: string
-                format: uuid
-components:
-  schemas:
-    User:
-      type: object
-      properties:
-        userId:
-          type: string
-        username:
-          type: string
-        email:
-          type: string
-        passwordHash:
-          type: string
-        serverIds:
-          type: array
-          items:
-            type: string
-    Server:
-      type: object
-      properties:
-        serverId:
-          type: string
-        serverName:
-          type: string
-        ram:
-          type: integer
-          format: int32
-        diskSpace:
-          type: integer
-          format: int32
-        cpuCores:
-          type: integer
-          format: int32
-        ipPubAddress:
-          type: string
-        ipPrivAddress:
-          type: string
-        serverStatus:
-          type: string
-          enum:
-          - STOPPED
-          - STARTING
-          - RUNNING
-          - STOPPING
-          - RESTARTING
-          - CRASHED
-          - UNKNOWN
-        ownerId:
-          type: string
+{
+    "openapi": "3.0.1",
+    "info": {
+        "title": "OpenAPI definition",
+        "version": "v0"
+    },
+    "servers": [
+        {
+            "url": "http://localhost:8080",
+            "description": "Generated server url"
+        }
+    ],
+    "paths": {
+        "/user/update": {
+            "post": {
+                "tags": [
+                    "user-controller-api"
+                ],
+                "operationId": "updateUser",
+                "parameters": [
+                    {
+                        "name": "user",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/components/schemas/User"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "The ID of the updated user",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "string",
+                                    "format": "uuid"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "User not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "string",
+                                    "format": "uuid"
+                                },
+                                "example": "User not found"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/user/add": {
+            "post": {
+                "tags": [
+                    "user-controller-api"
+                ],
+                "operationId": "addUser",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "username": {
+                                        "type": "string"
+                                    },
+                                    "email": {
+                                        "type": "string"
+                                    },
+                                    "password": {
+                                        "type": "string"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "responses": {
+                    "200": {
+                        "description": "The ID of the newly created user",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "string",
+                                    "format": "uuid"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid request body",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "string",
+                                    "format": "uuid"
+                                },
+                                "example": "Invalid request body"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/server/update": {
+            "post": {
+                "tags": [
+                    "server-controller-api"
+                ],
+                "operationId": "updateServer",
+                "parameters": [
+                    {
+                        "name": "server",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/components/schemas/Server"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "The ID of the updated server",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "string",
+                                    "format": "uuid"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Server not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "string",
+                                    "format": "uuid"
+                                },
+                                "example": "Server not found"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/server/add": {
+            "post": {
+                "tags": [
+                    "server-controller-api"
+                ],
+                "operationId": "addServer",
+                "parameters": [
+                    {
+                        "name": "serverName",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "ram",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int32"
+                        }
+                    },
+                    {
+                        "name": "diskSpace",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int32"
+                        }
+                    },
+                    {
+                        "name": "cpuCores",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int32"
+                        }
+                    },
+                    {
+                        "name": "ipPubAddress",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "ipPrivAddress",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "ownerId",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "The ID of the newly created server",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "string",
+                                    "format": "uuid"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "User not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "string",
+                                    "format": "uuid"
+                                },
+                                "example": "User not found"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/user/{userId}": {
+            "get": {
+                "tags": [
+                    "user-controller-api"
+                ],
+                "operationId": "getUser",
+                "parameters": [
+                    {
+                        "name": "userId",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "The user with the given ID",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "string",
+                                    "format": "uuid"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "User not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "string",
+                                    "format": "uuid"
+                                },
+                                "example": "User not found"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/user/": {
+            "get": {
+                "tags": [
+                    "user-controller-api"
+                ],
+                "operationId": "getAllUsers",
+                "responses": {
+                    "200": {
+                        "description": "A map of all users or null if no users exist",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/User"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/server/{serverId}": {
+            "get": {
+                "tags": [
+                    "server-controller-api"
+                ],
+                "operationId": "getServer",
+                "parameters": [
+                    {
+                        "name": "serverId",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "The server with the given ID",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Server"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Server not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "string",
+                                    "format": "uuid"
+                                },
+                                "example": "Server not found"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/server/": {
+            "get": {
+                "tags": [
+                    "server-controller-api"
+                ],
+                "operationId": "getAllServers",
+                "responses": {
+                    "200": {
+                        "description": "A map of all servers or null if no servers exist",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Server"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/user/delete/{userId}": {
+            "delete": {
+                "tags": [
+                    "user-controller-api"
+                ],
+                "operationId": "deleteUser",
+                "parameters": [
+                    {
+                        "name": "userId",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "The ID of the deleted user",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "string",
+                                    "format": "uuid"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "User not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "string",
+                                    "format": "uuid"
+                                },
+                                "example": "User not found"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/server/delete/{serverId}": {
+            "delete": {
+                "tags": [
+                    "server-controller-api"
+                ],
+                "operationId": "deleteServer",
+                "parameters": [
+                    {
+                        "name": "serverId",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "The ID of the deleted server",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "string",
+                                    "format": "uuid"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Server not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "string",
+                                    "format": "uuid"
+                                },
+                                "example": "Server not found"
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "User": {
+                "type": "object",
+                "properties": {
+                    "userId": {
+                        "type": "string"
+                    },
+                    "username": {
+                        "type": "string"
+                    },
+                    "email": {
+                        "type": "string"
+                    },
+                    "passwordHash": {
+                        "type": "string"
+                    },
+                    "serverIds": {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        }
+                    }
+                }
+            },
+            "Server": {
+                "type": "object",
+                "properties": {
+                    "serverId": {
+                        "type": "string"
+                    },
+                    "serverName": {
+                        "type": "string"
+                    },
+                    "ram": {
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    "diskSpace": {
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    "cpuCores": {
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    "ipPubAddress": {
+                        "type": "string"
+                    },
+                    "ipPrivAddress": {
+                        "type": "string"
+                    },
+                    "serverStatus": {
+                        "type": "string",
+                        "enum": [
+                            "STOPPED",
+                            "STARTING",
+                            "RUNNING",
+                            "STOPPING",
+                            "RESTARTING",
+                            "CRASHED",
+                            "UNKNOWN"
+                        ]
+                    },
+                    "ownerId": {
+                        "type": "string"
+                    }
+                }
+            }
+        }
+    }
+}
