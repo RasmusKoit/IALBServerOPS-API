@@ -137,14 +137,14 @@
                         }
                     },
                     "404": {
-                        "description": "Server not found",
+                        "description": "User not found",
                         "content": {
                             "application/json": {
                                 "schema": {
                                     "type": "string",
                                     "format": "uuid"
                                 },
-                                "example": "Server not found"
+                                "example": "User not found"
                             }
                         }
                     }
@@ -267,8 +267,7 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "type": "string",
-                                    "format": "uuid"
+                                    "$ref": "#/components/schemas/User"
                                 }
                             }
                         }
@@ -442,14 +441,14 @@
                         }
                     },
                     "404": {
-                        "description": "Server not found",
+                        "description": "User not found",
                         "content": {
                             "application/json": {
                                 "schema": {
                                     "type": "string",
                                     "format": "uuid"
                                 },
-                                "example": "Server not found"
+                                "example": "User not found"
                             }
                         }
                     }
@@ -509,6 +508,9 @@
                     "ipPrivAddress": {
                         "type": "string"
                     },
+                    "ownerId": {
+                        "type": "string"
+                    },
                     "serverStatus": {
                         "type": "string",
                         "enum": [
@@ -520,9 +522,6 @@
                             "CRASHED",
                             "UNKNOWN"
                         ]
-                    },
-                    "ownerId": {
-                        "type": "string"
                     }
                 }
             }
