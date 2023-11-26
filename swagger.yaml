@@ -1,8 +1,13 @@
 {
   "openapi": "3.0.1",
   "info": {
-    "title": "OpenAPI definition",
-    "version": "v0"
+    "title": "IALB Server Ops",
+    "description": "A RESTful API for managing servers and users",
+    "contact": {
+      "name": "GitHub",
+      "url": "https://github.com/RasmusKoit"
+    },
+    "version": "0.1"
   },
   "servers": [
     {
@@ -10,11 +15,21 @@
       "description": "Generated server url"
     }
   ],
+  "tags": [
+    {
+      "name": "Server Controller API",
+      "description": "Provides RESTful API endpoints for managing servers"
+    },
+    {
+      "name": "User Controller API",
+      "description": "Provides RESTful API endpoints for managing users"
+    }
+  ],
   "paths": {
     "/user/update": {
       "post": {
         "tags": [
-          "user-controller-api"
+          "User Controller API"
         ],
         "operationId": "updateUser",
         "parameters": [
@@ -57,7 +72,7 @@
     "/user/login": {
       "post": {
         "tags": [
-          "user-controller-api"
+          "User Controller API"
         ],
         "operationId": "login",
         "parameters": [
@@ -120,7 +135,7 @@
     "/user/add": {
       "post": {
         "tags": [
-          "user-controller-api"
+          "User Controller API"
         ],
         "operationId": "addUser",
         "parameters": [
@@ -179,7 +194,7 @@
     "/server/update": {
       "post": {
         "tags": [
-          "server-controller-api"
+          "Server Controller API"
         ],
         "operationId": "updateServer",
         "parameters": [
@@ -205,14 +220,23 @@
             }
           },
           "404": {
-            "description": "User not found",
+            "description": "Server or User not found",
             "content": {
               "application/json": {
                 "schema": {
                   "type": "string",
                   "format": "uuid"
                 },
-                "example": "User not found"
+                "examples": {
+                  "Server error": {
+                    "description": "Server error",
+                    "value": "Server not found"
+                  },
+                  "User error": {
+                    "description": "User error",
+                    "value": "User not found"
+                  }
+                }
               }
             }
           }
@@ -222,7 +246,7 @@
     "/server/add": {
       "post": {
         "tags": [
-          "server-controller-api"
+          "Server Controller API"
         ],
         "operationId": "addServer",
         "parameters": [
@@ -316,7 +340,7 @@
     "/user/username/{username}": {
       "get": {
         "tags": [
-          "user-controller-api"
+          "User Controller API"
         ],
         "operationId": "getUserByUsername",
         "parameters": [
@@ -358,7 +382,7 @@
     "/user/userid/{userId}": {
       "get": {
         "tags": [
-          "user-controller-api"
+          "User Controller API"
         ],
         "operationId": "getUser",
         "parameters": [
@@ -400,7 +424,7 @@
     "/user/email/{email}": {
       "get": {
         "tags": [
-          "user-controller-api"
+          "User Controller API"
         ],
         "operationId": "getUserByEmail",
         "parameters": [
@@ -442,7 +466,7 @@
     "/user/": {
       "get": {
         "tags": [
-          "user-controller-api"
+          "User Controller API"
         ],
         "operationId": "getAllUsers",
         "responses": {
@@ -462,7 +486,7 @@
     "/server/{serverId}": {
       "get": {
         "tags": [
-          "server-controller-api"
+          "Server Controller API"
         ],
         "operationId": "getServer",
         "parameters": [
@@ -504,7 +528,7 @@
     "/server/": {
       "get": {
         "tags": [
-          "server-controller-api"
+          "Server Controller API"
         ],
         "operationId": "getAllServers",
         "responses": {
@@ -524,7 +548,7 @@
     "/user/delete/{userId}": {
       "delete": {
         "tags": [
-          "user-controller-api"
+          "User Controller API"
         ],
         "operationId": "deleteUser",
         "parameters": [
@@ -567,7 +591,7 @@
     "/server/delete/{serverId}": {
       "delete": {
         "tags": [
-          "server-controller-api"
+          "Server Controller API"
         ],
         "operationId": "deleteServer",
         "parameters": [
@@ -593,14 +617,23 @@
             }
           },
           "404": {
-            "description": "User not found",
+            "description": "Server or User not found",
             "content": {
               "application/json": {
                 "schema": {
                   "type": "string",
                   "format": "uuid"
                 },
-                "example": "User not found"
+                "examples": {
+                  "Server error": {
+                    "description": "Server error",
+                    "value": "Server not found"
+                  },
+                  "User error": {
+                    "description": "User error",
+                    "value": "User not found"
+                  }
+                }
               }
             }
           }
