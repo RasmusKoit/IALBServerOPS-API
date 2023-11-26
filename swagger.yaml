@@ -54,33 +54,101 @@
                 }
             }
         },
+        "/user/login": {
+            "post": {
+                "tags": [
+                    "user-controller-api"
+                ],
+                "operationId": "login",
+                "parameters": [
+                    {
+                        "name": "username",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "password",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "The ID of the logged in user",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "string",
+                                    "format": "uuid"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Invalid credentials",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "string",
+                                    "format": "string"
+                                },
+                                "example": "Invalid credentials"
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "User not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "string",
+                                    "format": "string"
+                                },
+                                "example": "User not found"
+                            }
+                        }
+                    }
+                }
+            }
+        },
         "/user/add": {
             "post": {
                 "tags": [
                     "user-controller-api"
                 ],
                 "operationId": "addUser",
-                "requestBody": {
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "type": "object",
-                                "properties": {
-                                    "username": {
-                                        "type": "string"
-                                    },
-                                    "email": {
-                                        "type": "string"
-                                    },
-                                    "password": {
-                                        "type": "string"
-                                    }
-                                }
-                            }
+                "parameters": [
+                    {
+                        "name": "username",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
                         }
                     },
-                    "required": true
-                },
+                    {
+                        "name": "email",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "password",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "The ID of the newly created user",
@@ -137,14 +205,14 @@
                         }
                     },
                     "404": {
-                        "description": "User not found",
+                        "description": "Server not found",
                         "content": {
                             "application/json": {
                                 "schema": {
                                     "type": "string",
                                     "format": "uuid"
                                 },
-                                "example": "User not found"
+                                "example": "Server not found"
                             }
                         }
                     }
@@ -279,6 +347,90 @@
                                 "schema": {
                                     "type": "string",
                                     "format": "uuid"
+                                },
+                                "example": "User not found"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/user/username/{username}": {
+            "get": {
+                "tags": [
+                    "user-controller-api"
+                ],
+                "operationId": "getUserByUsername",
+                "parameters": [
+                    {
+                        "name": "username",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "The user with the given username",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/User"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "User not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "string",
+                                    "format": "string"
+                                },
+                                "example": "User not found"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/user/email/{email}": {
+            "get": {
+                "tags": [
+                    "user-controller-api"
+                ],
+                "operationId": "getUserByEmail",
+                "parameters": [
+                    {
+                        "name": "email",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "The user with the given email",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/User"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "User not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "string",
+                                    "format": "string"
                                 },
                                 "example": "User not found"
                             }
@@ -441,14 +593,14 @@
                         }
                     },
                     "404": {
-                        "description": "User not found",
+                        "description": "Server not found",
                         "content": {
                             "application/json": {
                                 "schema": {
                                     "type": "string",
                                     "format": "uuid"
                                 },
-                                "example": "User not found"
+                                "example": "Server not found"
                             }
                         }
                     }
@@ -508,9 +660,6 @@
                     "ipPrivAddress": {
                         "type": "string"
                     },
-                    "ownerId": {
-                        "type": "string"
-                    },
                     "serverStatus": {
                         "type": "string",
                         "enum": [
@@ -522,6 +671,9 @@
                             "CRASHED",
                             "UNKNOWN"
                         ]
+                    },
+                    "ownerId": {
+                        "type": "string"
                     }
                 }
             }
